@@ -59,6 +59,9 @@ class View(ft.UserControl):
 
         self._page.add(row1, row2, self.lst_result)
 
+        # self.lst_result=ft.ListView()
+        self._page.add(self.lst_result)
+
         self._page.update()
 
     def set_controller(self, controller):

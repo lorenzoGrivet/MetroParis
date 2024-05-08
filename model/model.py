@@ -38,6 +38,67 @@ class Model:
 
         pass
 
+    def creaGrafoPesato(self):
+        self._grafo.clear()
+        self._grafo.add_nodes_from(self._fermate)
+        self.addEdgePesati()
+
+
+    def getArchiPesoMaggiore(self):
+        if len(self._grafo.edges)==0:
+            print("Non ci sono archi")
+            return
+        else:
+            edges= self._grafo.edges
+
+            result=[]
+
+            for u,v in edges:
+                peso = (self._grafo[u][v]["weigth"])
+                if peso>1:
+                    result.append((u,v,peso))
+
+
+            return result
+
+
+
+    def addEdgePesati(self):
+        self._grafo.clear_edges()
+        allConnessioni=DAO.allConnessioni()
+
+        for c in allConnessioni:
+            if self._grafo.has_edge(self._idMap[c.id_stazP],self._idMap[c.id_stazA]):
+                self._grafo[self._idMap[c.id_stazP]][self._idMap[c.id_stazA]]["weigth"]+=1
+            else:
+                self._grafo.add_edge(self._idMap[c.id_stazP], self._idMap[c.id_stazA],weigth=1)
+
+    def getEdgesWeigth(self,v1,v2):
+        return self._grafo[v1][v2]
+
+    def addEdgeModel3(self):
+        pass
+
+    def getBFSNodes(self,source):
+        edges= nx.bfs_edges(self._grafo,source)
+        visited=[]
+
+        for u,v in edges:
+            visited.append(v)
+
+        return visited
+
+    def getDFSNodes(self,source):
+        edges= nx.dfs_edges(self._grafo,source)
+        visited=[]
+
+        for u,v in edges:
+            visited.append(v)
+
+        return visited
+
+
+
     @property
     def fermate(self):
         return self._fermate
